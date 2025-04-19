@@ -95,6 +95,9 @@ Integrated LIME for local explainability.
 
 Built an interactive Gradio interface to explore feature impact on predictions.
 
+![image](https://github.com/user-attachments/assets/5614bea5-4aca-47cc-b9a1-d50a3f049e10)
+
+
 
 📤 **Submission**
 
