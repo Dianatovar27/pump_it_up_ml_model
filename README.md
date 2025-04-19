@@ -65,7 +65,7 @@ XGBoost
 
 Naive Bayes
 
-Final Model:
+**Final Model:**
 
 RandomForestClassifier with tuned hyperparameters:
 
