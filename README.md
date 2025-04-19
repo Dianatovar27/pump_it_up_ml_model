@@ -4,11 +4,12 @@ Pump It Up - ML Model
 
 Predicting the functionality status of waterpoints in Tanzania using machine learning.
 
-🚀 Project Overview
+
+🚀 **Project Overview**
 
 This repository includes all the preprocessing steps, feature engineering, model training, evaluation, and interpretability analysis necessary to build a robust predictive model.
 
-📂 Dataset Description
+📂 **Dataset Description**
 
 The dataset contains information on over 59,000 waterpoints, including:
 
@@ -20,9 +21,9 @@ Operational information (permit status, extraction type, management type)
 
 Target variable: status_group
 
-🧠 Workflow
+## 🔁 Workflow Overview
 
-✅ Data Cleaning
+✅ **Data Cleaning**
 
 Removed duplicate and irrelevant columns
 
@@ -34,7 +35,7 @@ Converted date_recorded into an antiguedad feature measuring days since earliest
 
 Binary encoded boolean variables (permit, public_meeting).
 
-🔧 Feature Engineering
+🔧 **Feature Engineering**
 
 Log-transformed skewed numerical variables: population, amount_tsh, gps_height.
 
@@ -52,7 +53,7 @@ Handled construction_year anomalies and binned year quality.
 
 Reduced dimensionality by selecting top 27 features covering 99% cumulative importance.
 
-📊 Model Training & Evaluation
+📊**Model Training & Evaluation**
 
 Models Tried:
 
@@ -77,7 +78,7 @@ Accuracy on validation set: ~0.8189
 
 Final submission format matched DrivenData requirements (id, status_group).
 
-📈 Model Tuning
+📈 **Model Tuning**
 
 Used both GridSearchCV and RandomizedSearchCV.
 
@@ -85,20 +86,20 @@ Optimized for accuracy with 3-fold CV.
 
 Selected best hyperparameter combo using entire training set.
 
-🧠 Interpretability
+🧠 **Interpretability**
 
 Integrated LIME for local explainability.
 
 Built an interactive Gradio interface to explore feature impact on predictions.
 
 
-📤 Submission
+📤 **Submission**
 
 Final submission file: submission_rf_tuned.csv
 
 Prediction labels: functional, non functional, functional needs repair
 
-📌 Next Steps (Suggestions)
+📌 **Next Steps** (Suggestions)
 
 Feature interaction modeling (e.g. polynomial features).
 
