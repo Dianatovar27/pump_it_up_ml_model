@@ -1,12 +1,12 @@
-# pump_it_up_ml_model
+# Pump it Up: ML Model to Predict Water Pump Status in Tanzania
 Machine learning model to predict the operational status of waterpoints in Tanzania. Includes data cleaning, feature engineering, EDA, and classification techniques to support infrastructure decision-making.
 Pump It Up - ML Model
 
 Predicting the functionality status of waterpoints in Tanzania using machine learning.
 
-📌 Project Overview
+🚀 Project Overview
 
-This project addresses the challenge of identifying which waterpoints in Tanzania are functional, non-functional, or in need of repair. The model is built using historical data and aims to support better decision-making in infrastructure maintenance.
+This repository includes all the preprocessing steps, feature engineering, model training, evaluation, and interpretability analysis necessary to build a robust predictive model.
 
 📂 Dataset Description
 
@@ -20,77 +20,99 @@ Operational information (permit status, extraction type, management type)
 
 Target variable: status_group
 
-✅ Workflow
+🧠 Workflow
 
-1. Data Cleaning
+✅ Data Cleaning
 
 Removed duplicate and irrelevant columns
 
 Imputed missing values using mode or placeholder values (e.g. "Unknown")
 
-Simplified high-cardinality categorical variables using Top N + "Other"
+Grouped rare categories in high-cardinality categorical variables (funder, installer, ward) using Top-N + "Other" approach.
 
-2. Feature Engineering (in progress)
+Converted date_recorded into an antiguedad feature measuring days since earliest record.
 
-Creating derived features like antiguedad, has_valid_coords, log_population
+Binary encoded boolean variables (permit, public_meeting).
 
-Handling outliers in gps_height, amount_tsh, and population
+🔧 Feature Engineering
 
-Transforming construction_year to improve model interpretability
+Log-transformed skewed numerical variables: population, amount_tsh, gps_height.
 
-3. Exploratory Data Analysis (EDA)
+Created binary flags for potentially informative values:
 
-Visualized distributions and correlations
+is_amount_tsh_zero
 
-Explored class imbalance in status_group
+is_gps_height_zero
 
-Boxplots and countplots to identify potential data issues
+has_valid_coords
 
-4. Modeling (upcoming)
+has_valid_year
 
-Will use classification models such as:
+Handled construction_year anomalies and binned year quality.
 
-Random Forest
+Reduced dimensionality by selecting top 27 features covering 99% cumulative importance.
+
+📊 Model Training & Evaluation
+
+Models Tried:
 
 Decision Tree
 
+Random Forest ✅ (best performer)
+
 XGBoost
 
-Will evaluate using metrics: Accuracy, F1-Score, Confusion Matrix
+Naive Bayes
 
-📊 Example Visuals
+Final Model:
 
-(to be added)
+RandomForestClassifier with tuned hyperparameters:
 
-Status group by quantity
+max_depth=21
+min_samples_leaf=2
+max_features='log2'
+n_estimators=100
 
-Boxplots for population and gps_height
+Accuracy on validation set: ~0.8189
 
-Countplots for categorical distributions
+Final submission format matched DrivenData requirements (id, status_group).
 
-📁 Files Structure
+📈 Model Tuning
 
-├── data/                 # Raw and cleaned datasets
+Used both GridSearchCV and RandomizedSearchCV.
 
-├── notebooks/            # Jupyter notebooks (EDA, modeling, feature engineering)
+Optimized for accuracy with 3-fold CV.
 
-├── scripts/              # Python scripts for preprocessing and training
+Selected best hyperparameter combo using entire training set.
 
-├── visuals/              # Graphs and plots for presentation
+🧠 Interpretability
 
-└── README.md             # Project summary and guide
+Integrated LIME for local explainability.
+
+Built an interactive Gradio interface to explore feature impact on predictions.
 
 
-🚀 Goal
+📤 Submission
 
-To build a robust, interpretable model that helps prioritize which waterpoints need maintenance or replacement, ultimately improving access to clean water.
+Final submission file: submission_rf_tuned.csv
 
-📌 Status
+Prediction labels: functional, non functional, functional needs repair
 
-Still in progress. Currently wrapping up feature engineering phase before model selection and tuning.
+📌 Next Steps (Suggestions)
 
-Stay tuned!
+Feature interaction modeling (e.g. polynomial features).
 
-👩🏽‍💻 Author
+Try stacking or voting ensembles.
 
-DIANA TOVAR REOLON
+Apply Optimal Binning to continuous variables.
+
+Explore spatial clustering with K-Means or DBSCAN.
+
+
+
+
+
+Made with ❤️ by Diana Tovar Reolon.
+
+For any questions, suggestions, or contributions, feel free to open an issue or fork this repo!
+
