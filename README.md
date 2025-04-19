@@ -70,8 +70,11 @@ Final Model:
 RandomForestClassifier with tuned hyperparameters:
 
 max_depth=21
+
 min_samples_leaf=2
+
 max_features='log2'
+
 n_estimators=100
 
 Accuracy on validation set: ~0.8189
@@ -112,8 +115,8 @@ Explore spatial clustering with K-Means or DBSCAN.
 
 
 
-
-Made with ❤️ by Diana Tovar Reolon.
+---
+Made with ❤️ by **Diana Tovar Reolon**.
 
 For any questions, suggestions, or contributions, feel free to open an issue or fork this repo!
 
