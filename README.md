@@ -5,9 +5,16 @@ Pump It Up - ML Model
 Predicting the functionality status of waterpoints in Tanzania using machine learning.
 
 
-🚀 **Project Overview**
+📌 **Objective**
 
-This repository includes all the preprocessing steps, feature engineering, model training, evaluation, and interpretability analysis necessary to build a robust predictive model.
+Classify each water pump into one of three categories:
+
+functional
+
+non functional
+
+functional needs repair
+
 
 📂 **Dataset Description**
 
@@ -21,41 +28,55 @@ Operational information (permit status, extraction type, management type)
 
 Target variable: status_group
 
-## 🔁 Workflow Overview
 
-✅ **Data Cleaning**
+## 🚰 Workflow Overview
 
-Removed duplicate and irrelevant columns
+🧹 **Data Cleaning**
 
-Imputed missing values using mode or placeholder values (e.g. "Unknown")
+Removed columns with only one value (recorded_by) or redundant information (payment_type, quantity_group, etc.).
 
-Grouped rare categories in high-cardinality categorical variables (funder, installer, ward) using Top-N + "Other" approach.
+Handled missing values using:
 
-Converted date_recorded into an antiguedad feature measuring days since earliest record.
+"Unknown" for categorical columns such as funder and installer.
 
-Binary encoded boolean variables (permit, public_meeting).
+Mode imputation by group for scheme_management, grouped by management.
 
-🔧 **Feature Engineering**
+Dropped columns that were too specific or had high cardinality (scheme_name, subvillage, wpt_name).
 
-Log-transformed skewed numerical variables: population, amount_tsh, gps_height.
 
-Created binary flags for potentially informative values:
+🧪**Feature Engineering**
+
+Applied transformations:
+Used np.log1p() on skewed numerical variables:
+
+population
+
+amount_tsh
+
+gps_height
+
+Created binary flags:
 
 is_amount_tsh_zero
 
 is_gps_height_zero
 
-has_valid_coords
+has_valid_coords (when longitude > 1)
 
-has_valid_year
+has_valid_year (when construction_year >= 1960)
 
-Handled construction_year anomalies and binned year quality.
+Grouped infrequent categories into "Rare" using tailored frequency thresholds per variable.
 
-Reduced dimensionality by selecting top 27 features covering 99% cumulative importance.
+Reduced multicollinearity by removing raw variables like gps_height, population, and amount_tsh, while keeping only their log transformations and flags.
 
-📊**Model Training & Evaluation**
+Tested K-Means clustering on geolocation (latitude, longitude) — did not improve the model.
 
-Models Tried:
+Applied OptimalBinning on log_population — also did not improve results.
+
+
+📊 **Modeling**
+
+Models tested:
 
 Decision Tree
 
@@ -63,31 +84,40 @@ Random Forest ✅ (best performer)
 
 XGBoost
 
-Naive Bayes
+Tuning:
+Performed hyperparameter tuning with RandomizedSearchCV (as GridSearchCV underperformed).
 
-**Final Model:**
+Removed features with very low importance (<1 %) based on cumulative feature importance.
 
-RandomForestClassifier with tuned hyperparameters:
 
-max_depth=21
+📤 **Final Model**
 
-min_samples_leaf=2
+RandomForestClassifier(
 
-max_features='log2'
+    max_depth=21,
+    
+    min_samples_leaf=2,
+    
+    max_features='log2',
+    
+    n_estimators=100,
+    
+    random_state=42
+)
 
-n_estimators=100
+Trained on an optimized dataset (X_full_sin_dup) with only the top-performing features and no redundant columns.
 
-Accuracy on validation set: ~0.8189
 
-Final submission format matched DrivenData requirements (id, status_group).
+📈 **Final Result**
 
-📈 **Model Tuning**
+Accuracy on validation: 0.8201
 
-Used both GridSearchCV and RandomizedSearchCV.
+Significant improvement from previous versions (e.g., 0.7858, 0.8165, 0.8189)
 
-Optimized for accuracy with 3-fold CV.
+Explained model predictions using LIME and multiclass ROC curves
 
-Selected best hyperparameter combo using entire training set.
+Logged all experiments and metrics using MLflow
+
 
 🧠 **Interpretability**
 
@@ -98,23 +128,10 @@ Built an interactive Gradio interface to explore feature impact on predictions.
 ![image](https://github.com/user-attachments/assets/5614bea5-4aca-47cc-b9a1-d50a3f049e10)
 
 
+🚰 **Conclusion**
 
-📤 **Submission**
-
-Final submission file: submission_rf_tuned.csv
-
-Prediction labels: functional, non functional, functional needs repair
-
-📌 **Next Steps** (Suggestions)
-
-Feature interaction modeling (e.g. polynomial features).
-
-Try stacking or voting ensembles.
-
-Apply Optimal Binning to continuous variables.
-
-Explore spatial clustering with K-Means or DBSCAN.
-
+The strongest gains came from careful feature engineering — including logarithmic transformations, binary flags, rare-category grouping, and multicollinearity reduction.
+Although some advanced techniques like OptimalBinning and KMeans didn’t improve performance, testing them helped validate the robustness of the final model.
 
 
 
